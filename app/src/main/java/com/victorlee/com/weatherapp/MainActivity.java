@@ -1,5 +1,6 @@
 package com.victorlee.com.weatherapp;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -55,8 +56,12 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.addlocation){
             Toast.makeText(this,"You clicked the add button",Toast.LENGTH_SHORT).show();
             // Testing adding list
-            dataSource.add("Vietnam");
-            myAdapter.notifyDataSetChanged();
+//            dataSource.add("Vietnam");
+//            myAdapter.notifyDataSetChanged();
+
+            // start new Intent
+            Intent i = new Intent(this,AddLocationActivity.class);
+            startActivityForResult(i,1);
         }
         return true;
     }
@@ -66,5 +71,17 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.button_menu,menu);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1){
+            if (resultCode == Activity.RESULT_OK){
+
+                String location = data.getStringExtra("location");
+                dataSource.add(location);
+                myAdapter.notifyDataSetChanged();
+            }
+        }
     }
 }
